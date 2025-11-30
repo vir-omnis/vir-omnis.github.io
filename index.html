@@ -3,119 +3,349 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Your GitHub Pages Blog (No Tags)</title>
+<title>Your GitHub Pages Blog</title>
+<meta name="description" content="A simple static blog template for GitHub Pages." />
 <style>
-  body { margin:0; font-family: Arial, sans-serif; background:#0f1724; color:white; }
-  .container { max-width:900px; margin:0 auto; padding:20px; }
-  .card { background:#141b2d; padding:20px; border-radius:10px; margin-bottom:20px; }
-  .post-item { background:#19233a; padding:15px; border-radius:10px; cursor:pointer; }
-  .post-item:hover { background:#203050; }
-  a { color:#7dd3fc; text-decoration:none; }
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --muted:#9aa7b8;
+    --accent:#7dd3fc;
+    --accent-2:#60a5fa;
+    --glass: rgba(255,255,255,0.03);
+    --radius:14px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,#071126 0%, #051025 100%);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.5;
+  }
+  .container{max-width:980px;margin:36px auto;padding:28px;}
+  header.site{
+    display:flex;gap:18px;align-items:center;justify-content:space-between;margin-bottom:28px;
+  }
+  .brand{display:flex;gap:14px;align-items:center}
+  .logo{
+    width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#032;box-shadow:0 6px 18px rgba(8,17,32,0.6);
+  }
+  h1{font-size:22px;margin:0}
+  p.lead{margin:0;color:var(--muted)}
+  nav.controls{display:flex;gap:10px;align-items:center}
+  a.btn{
+    text-decoration:none;padding:8px 12px;border-radius:10px;background:var(--glass);color:var(--accent);border:1px solid rgba(255,255,255,0.03);font-weight:600;font-size:13px;
+  }
+  main{display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px;border-radius:var(--radius);box-shadow:0 8px 24px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.02)}
+  .post-list{display:flex;flex-direction:column;gap:14px}
+  .post-item{padding:12px;border-radius:12px;background:rgba(255,255,255,0.01);cursor:pointer;transition:transform .12s ease}
+  .post-item:hover{transform:translateY(-4px)}
+  .post-title{font-size:16px;margin:0 0 6px 0}
+  .meta{font-size:13px;color:var(--muted)}
+  .content{padding-top:8px}
+  .sidebar .widget{margin-bottom:16px}
+  .search{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:transparent;color:inherit}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .tag{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--muted)}
+  article.post{line-height:1.75}
+  article.post h2{margin:6px 0 10px 0}
+  article.post p{margin:10px 0}
+  footer{margin-top:34px;color:var(--muted);font-size:13px;text-align:center}
+  .empty{color:var(--muted);padding:18px;border-radius:12px;background:rgba(255,255,255,0.01)}
+  /* responsive */
+  @media (max-width:900px){
+    main{grid-template-columns:1fr; padding-bottom:30px}
+    .sidebar{order:2}
+  }
+  pre { background: rgba(0,0,0,0.25); padding:12px; border-radius:8px; overflow:auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:13px; }
+  a.inline{color:var(--accent)}
 </style>
 </head>
 <body>
-<div class="container">
+  <div class="container">
+    <header class="site">
+      <div class="brand">
+        <div class="logo">SB</div>
+        <div>
+          <h1>Your Blog Title</h1>
+          <p class="lead">Small tagline — built with GitHub Pages & plain HTML/CSS/JS</p>
+        </div>
+      </div>
 
-  <header class="card">
-    <h1>Your Blog Title</h1>
-    <p>Custom GitHub Pages Blog — Tags Removed</p>
-    <nav>
-      <a href="#/">Home</a> |
-      <a href="#/about">About</a>
-    </nav>
-  </header>
+      <nav class="controls">
+        <a href="#/" class="btn" id="homeBtn">Home</a>
+        <a href="#/about" class="btn" id="aboutBtn">About</a>
+        <a href="#/new" class="btn" id="newBtn">New post (edit JS)</a>
+      </nav>
+    </header>
 
-  <main id="content" class="card"></main>
+    <main>
+      <!-- content area -->
+      <section id="content" class="card">
+        <!-- JavaScript will render here -->
+      </section>
 
-</div>
+      <!-- sidebar -->
+      <aside class="sidebar">
+        <div class="card widget" style="margin-bottom:14px">
+          <input id="searchBox" class="search" placeholder="Search posts (title or tag)"/>
+        </div>
+
+        <div class="card widget">
+          <h3 style="margin:0 0 8px 0">Tags</h3>
+          <div id="tagList" class="tags"></div>
+        </div>
+
+        <div class="card widget">
+          <h3 style="margin:0 0 8px 0">About</h3>
+          <p class="meta" style="margin:0">
+            This is a lightweight static blog. Edit the `posts` array in this file to add or update posts, or replace with a build step (Hugo/Jekyll/Astro) for advanced workflows.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div>Made with ♥ · Static HTML blog · Hosted on GitHub Pages</div>
+    </footer>
+  </div>
 
 <script>
-// Posts without tags
+/* ========== POSTS: Edit this array to add new posts ========== 
+ Each post object should include:
+  - slug: URL-friendly id (used in hash, e.g. #/post/first-post)
+  - title
+  - date (YYYY-MM-DD)
+  - tags: array of strings
+  - excerpt: short summary
+  - content: HTML string for the post body
+*/
 const posts = [
   {
     slug: "welcome",
     title: "Welcome — Your new static blog",
     date: "2025-11-29",
+    tags: ["intro","setup"],
     excerpt: "This is your first post. Edit the posts array in index.html to change this content.",
     content: `
-      <p>This is your simplified blog. Tags have been completely removed.</p>
-      <p>Edit the <code>posts</code> array in this file to add more posts.</p>
+      <p>Tips to get started:</p>
+      <ul>
+        <li>Edit <code>posts</code> in this file to add more posts.</li>
+        <li>Use your own custom CSS inside the &lt;style&gt; block.</li>
+        <li>To use a custom domain later, set it in GitHub Pages settings and add a CNAME file.</li>
+      </ul>
+      <p>You're running a fully static site — everything can be versioned in git and pushed to GitHub. 🎉</p>
     `
   },
   {
     slug: "how-to-migrate",
     title: "How to migrate this site to another host",
     date: "2025-06-14",
-    excerpt: "Moving away from GitHub Pages? It's easy — copy files to any static host.",
+    tags: ["deploy","hosting"],
+    excerpt: "Moving away from GitHub Pages? It's easy — you can copy these files to any static host.",
     content: `
-      <p>Since the site is static HTML, migration is simple:</p>
+      <p>Since the site is just static HTML/CSS/JS, migration is simple:</p>
       <ol>
-        <li>Download or clone the repo</li>
-        <li>Upload the files anywhere else</li>
-        <li>Update DNS if using a custom domain</li>
+        <li>Download the repo or clone it.</li>
+        <li>Upload the files to the new host (Netlify, Vercel, S3, any static host).</li>
+        <li>If you use a custom domain, update DNS to point to the new host.</li>
       </ol>
+      <pre>git clone https://github.com/yourname/yourrepo.git
+cd yourrepo
+# edit files
+git add .
+git commit -m "update posts"
+git push</pre>
     `
   }
 ];
 
-function formatDate(iso) {
-  const d = new Date(iso);
-  return d.toLocaleDateString();
+/* ========== Minimal client-side router & rendering ========== */
+
+function formatDate(iso){ 
+  try{
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
+  }catch(e){return iso}
 }
 
-function renderIndex() {
-  const el = document.getElementById('content');
-  el.innerHTML = `<h2>All Posts</h2>`;
+function uniqueTags(posts){
+  const s = new Set();
+  posts.forEach(p => (p.tags||[]).forEach(t => s.add(t)));
+  return Array.from(s).sort();
+}
 
-  posts.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'post-item';
-    div.innerHTML = `
-      <h3>${p.title}</h3>
-      <p><small>${formatDate(p.date)}</small></p>
-      <p>${p.excerpt}</p>
-    `;
-    div.onclick = () => location.hash = `#/post/${p.slug}`;
-    el.appendChild(div);
+function renderSidebarTags(){
+  const tagList = document.getElementById('tagList');
+  tagList.innerHTML = '';
+  const tags = uniqueTags(posts);
+  if(tags.length===0){ tagList.innerHTML = '<div class="empty">No tags yet</div>'; return; }
+  tags.forEach(t=>{
+    const el = document.createElement('div');
+    el.className = 'tag';
+    el.textContent = t;
+    el.style.cursor = 'pointer';
+    el.onclick = ()=> { location.hash = '#/tag/' + encodeURIComponent(t); }
+    tagList.appendChild(el);
   });
 }
 
-function renderPost(slug) {
-  const p = posts.find(x => x.slug === slug);
-  const el = document.getElementById('content');
-  if (!p) {
-    el.innerHTML = `<p>Post not found.</p>`;
+function renderIndex(queryTag=null, queryTerm=null){
+  const content = document.getElementById('content');
+  content.innerHTML = '';
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `<h2 style="margin-top:0">All posts</h2><div class="post-list" id="postList"></div>`;
+  content.appendChild(wrapper);
+
+  const list = document.getElementById('postList');
+  // sort by date desc
+  const items = posts.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const filtered = items.filter(p=>{
+    if(queryTag && !(p.tags||[]).includes(queryTag)) return false;
+    if(queryTerm){
+      const term = queryTerm.toLowerCase();
+      return (p.title||'').toLowerCase().includes(term) || (p.excerpt||'').toLowerCase().includes(term) || (p.content||'').toLowerCase().includes(term);
+    }
+    return true;
+  });
+
+  if(filtered.length===0){
+    list.innerHTML = '<div class="empty">No posts yet matching your query.</div>';
     return;
   }
 
-  el.innerHTML = `
-    <a href="#/">← Back</a>
-    <h2>${p.title}</h2>
-    <p><small>${formatDate(p.date)}</small></p>
-    <div>${p.content}</div>
-  `;
+  filtered.forEach(p=>{
+    const node = document.createElement('div');
+    node.className = 'post-item';
+    node.innerHTML = `
+      <div>
+        <h3 class="post-title">${p.title}</h3>
+        <div class="meta">${formatDate(p.date)} • ${ (p.tags||[]).map(t=>`<span class="tag" style="margin-right:6px">${t}</span>`).join(' ') }</div>
+        <div class="content" style="margin-top:8px;color:var(--muted)">${p.excerpt || ''}</div>
+      </div>
+    `;
+    node.onclick = ()=> { location.hash = '#/post/' + encodeURIComponent(p.slug); }
+    list.appendChild(node);
+  });
 }
 
-function renderAbout() {
-  document.getElementById('content').innerHTML = `
+function renderPost(slug){
+  const p = posts.find(x=>x.slug===slug);
+  const content = document.getElementById('content');
+  if(!p){
+    content.innerHTML = '<div class="empty">Post not found.</div>';
+    return;
+  }
+  content.innerHTML = `
+    <article class="post">
+      <a href="#/" style="text-decoration:none;color:var(--accent);font-weight:600">&larr; Back</a>
+      <h2 style="margin-top:8px">${p.title}</h2>
+      <div class="meta">${formatDate(p.date)} • ${ (p.tags||[]).map(t=>`<span class="tag" style="margin-right:6px">${t}</span>`).join(' ') }</div>
+      <div style="margin-top:14px">${p.content}</div>
+    </article>
+  `;
+  // add click handlers to tags inside the post
+  document.querySelectorAll('.post .tag').forEach(el=>{
+    el.style.cursor='pointer';
+    el.onclick = (e)=> { 
+      const tag = el.textContent;
+      location.hash = '#/tag/' + encodeURIComponent(tag);
+      e.stopPropagation();
+    };
+  });
+}
+
+function renderAbout(){
+  const content = document.getElementById('content');
+  content.innerHTML = `
     <h2>About</h2>
-    <p>This is a tag-free static blog template.</p>
-    <p>Edit the HTML file directly to customize it.</p>
+    <p class="meta">This is a tiny static blog template. You can customize the styles, structure, and the posts stored in the <code>posts</code> array inside this file.</p>
+    <h3>How to add posts</h3>
+    <ol>
+      <li>Edit the <code>posts</code> array near the top of this file and add a new object with <code>slug</code>, <code>title</code>, <code>date</code>, <code>tags</code>, <code>excerpt</code>, and <code>content</code>.</li>
+      <li>Commit & push to GitHub. The site updates instantly when you reload the page.</li>
+    </ol>
+    <h3>Want Markdown?</h3>
+    <p class="meta">You can integrate a small markdown parser (like <code>marked</code>) and store markdown strings — but that requires adding a small library or writing a tiny converter.</p>
   `;
 }
 
-function router() {
+function router(){
   const hash = location.hash || '#/';
-  const parts = hash.slice(2).split('/');
+  const parts = hash.slice(2).split('/').filter(Boolean); // remove "#/"
+  renderSidebarTags();
 
-  if (!parts[0]) return renderIndex();
-  if (parts[0] === 'post') return renderPost(parts[1]);
-  if (parts[0] === 'about') return renderAbout();
-  return renderIndex();
+  // simple routing rules:
+  if(parts.length===0){
+    // home
+    renderIndex();
+    return;
+  }
+  const [r, a] = parts;
+  if(r === 'post' && a){
+    renderPost(decodeURIComponent(a));
+    return;
+  }
+  if(r === 'tag' && a){
+    renderIndex(decodeURIComponent(a));
+    return;
+  }
+  if(r === 'about'){
+    renderAbout();
+    return;
+  }
+  if(r === 'search' && a){
+    renderIndex(null, decodeURIComponent(a));
+    return;
+  }
+  // fallback -> home
+  renderIndex();
 }
 
+// wire up search
+document.getElementById('searchBox').addEventListener('keydown', function(e){
+  if(e.key === 'Enter'){
+    const q = this.value.trim();
+    if(q.length===0) { location.hash = '#/'; }
+    else { location.hash = '#/search/' + encodeURIComponent(q); }
+  }
+});
+
+/* search live as you type (optional) */
+let liveTimer = null;
+document.getElementById('searchBox').addEventListener('input', function(){
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(()=> {
+    const q = this.value.trim();
+    if(q.length===0) { router(); } else { renderIndex(null, q); }
+  }, 220);
+});
+
+// navigation buttons
+document.getElementById('homeBtn').addEventListener('click', ()=> location.hash = '#/');
+document.getElementById('aboutBtn').addEventListener('click', ()=> location.hash = '#/about');
+
+// on hash change
 window.addEventListener('hashchange', router);
+
+// initial
 router();
+
+/* ========== Helpful: expose a small helper for editing in console ==========
+ Use in browser console:
+  addPost({slug:'my-slug', title:'My Post', date:'2025-11-29', tags:['x'], excerpt:'...', content:'<p>html</p>'})
+*/
+window.addPost = function(obj){
+  if(!obj.slug) return alert('post needs a slug');
+  posts.push(obj);
+  alert('post added in-memory. To persist, edit index.html and add it to the posts array.');
+  router();
+}
 </script>
 </body>
 </html>
